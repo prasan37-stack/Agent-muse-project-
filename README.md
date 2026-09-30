@@ -1,2 +1,2 @@
 # Agent-muse-project-
-Project done with agen muse 
+Project done with Agent Muse 
