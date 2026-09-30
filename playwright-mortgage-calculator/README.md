@@ -20,6 +20,12 @@ npm run test:chromium # chromium only
 npm run test:headed   # headed mode
 ```
 
+> **Run these tests locally in VS Code, not in a cloud environment.**
+> Wells Fargo blocks automated browsers from cloud/CI environments — the site
+> refuses the connection there. On your own computer the tests launch and run fine.
+
+![Run the tests locally in VS Code](docs/vscode-run-note.jpg)
+
 ## Layout
 
 - `tests/mortgage-calculator.spec.ts` — all 40 test cases, grouped by module
