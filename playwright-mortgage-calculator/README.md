@@ -1,8 +1,9 @@
-# FR001 Mortgage Calculator — Playwright Tests
+# Wells Fargo Mortgage Calculator — Playwright Tests
 
 TypeScript Playwright automated tests generated from
 `Detailed_TestCases_FR001_Mortgage_Calculator.xlsx`
-(TC_FR001_01 through TC_FR001_25).
+(TC_FR001_01 through TC_FR001_25), plus the Get Prequalified flow
+(TC_FR001_26 through TC_FR001_40) — 40 test cases total.
 
 ## Setup
 
@@ -25,7 +26,7 @@ npm run test:headed   # headed mode
   - TC_FR001_01–25: rate calculator inputs, validation, API, results
   - TC_FR001_26–40: Get Prequalified flow (6 steps, disclaimers, navigation)
 - `pages/MortgageCalculatorPage.ts` — page object for the calculator input page
-- `playwright.config.ts` — base URL `https://web.secure.wellsfargo.com`, 3 browser projects
+- `playwright.config.ts` — base URL `https://www.wellsfargo.com` (calculator: `/mortgage/rates/`; prequal flow: `https://web.secure.wellsfargo.com/mortgage/get-prequalified/`), 3 browser projects
 
 ## Notes
 

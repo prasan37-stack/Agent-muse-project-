@@ -217,7 +217,7 @@ test.describe('FR001 - Mortgage Calculator', () => {
 });
 
 test.describe('FR001 - Get Prequalified flow (6 steps)', () => {
-  const prequalUrl = '/mortgage/get-prequalified/?src=buy&refdm=DMIWE7AW9T';
+  const prequalUrl = 'https://web.secure.wellsfargo.com/mortgage/get-prequalified/?src=buy&refdm=DMIWE7AW9T';
 
   test.beforeEach(async ({ page }) => {
     await page.goto(prequalUrl, { waitUntil: 'domcontentloaded' });
@@ -302,7 +302,7 @@ test.describe('FR001 - Get Prequalified flow (6 steps)', () => {
 
   // ------------------------------------------------- Resilience
   test('TC_FR001_36 - Page works with tracking params stripped', async ({ page }) => {
-    const response = await page.goto('/mortgage/get-prequalified/?src=buy', { waitUntil: 'load' });
+    const response = await page.goto('https://web.secure.wellsfargo.com/mortgage/get-prequalified/?src=buy', { waitUntil: 'load' });
     expect(response?.status()).toBe(200);
     await expect(page.getByText(/step 1 of 6/i)).toBeVisible();
   });
