@@ -178,7 +178,7 @@ test.describe('FR001 - Mortgage Calculator', () => {
 
   test('TC_FR001_22 - API timeout is handled gracefully', async ({ page }) => {
     // Simulate a >30s backend delay; adjust the route matcher to the real endpoint.
-    await page.route('**/rate_calc/**', async (route) => {
+    await page.route('**/get-prequalified/**', async (route) => {
       await new Promise((r) => setTimeout(r, 35_000));
       await route.abort();
     });
@@ -213,5 +213,130 @@ test.describe('FR001 - Mortgage Calculator', () => {
     await page.getByRole('button', { name: /start over|edit/i }).first().click();
     await expect(page).toHaveURL(/input_page/);
     await expect(calc.calculateButton).toBeVisible();
+  });
+});
+
+test.describe('FR001 - Get Prequalified flow (6 steps)', () => {
+  const prequalUrl = '/mortgage/get-prequalified/?src=buy&refdm=DMIWE7AW9T';
+
+  test.beforeEach(async ({ page }) => {
+    await page.goto(prequalUrl, { waitUntil: 'domcontentloaded' });
+  });
+
+  // ------------------------------------------------------- Step 1 - Landing
+  test('TC_FR001_26 - prequal page loads with 200 and shows step 1 of 6', async ({ page }) => {
+    const response = await page.goto(prequalUrl, { waitUntil: 'load' });
+    expect(response?.status()).toBe(200);
+    await expect(page.getByText(/step 1 of 6/i)).toBeVisible();
+    await expect(page.getByText(/get prequalified/i).first()).toBeVisible();
+  });
+
+  test('TC_FR001_27 - credit-impact disclaimer is visible before starting', async ({ page }) => {
+    await expect(page.getByText(/credit will not be affected/i)).toBeVisible();
+  });
+
+  test('TC_FR001_28 - prequal vs full application explainer is shown', async ({ page }) => {
+    await expect(
+      page.getByText(/prequalification isn.t the same as.*full loan application/i)
+    ).toBeVisible();
+  });
+
+  test('TC_FR001_29 - mortgage consultant phone CTA is present', async ({ page }) => {
+    const callLink = page.getByRole('link', { name: /1-888-446-2350/ });
+    await expect(callLink).toBeVisible();
+    await expect(callLink).toHaveAttribute('href', /tel:/i);
+  });
+
+  test('TC_FR001_30 - Equal Housing Lender disclosure is present', async ({ page }) => {
+    await expect(page.getByText(/equal housing lender/i)).toBeVisible();
+    await expect(page.getByText(/wells fargo home mortgage.*division/i)).toBeVisible();
+  });
+
+  // ------------------------------------------------- Step navigation basics
+  test('TC_FR001_31 - step 1 question is answerable and advances to step 2', async ({ page }) => {
+    const step1 = page.getByText(/question 1/i).first();
+    await expect(step1).toBeVisible();
+    const firstOption = page.getByRole('radio').first();
+    await expect(firstOption).toBeVisible();
+    await firstOption.check({ force: true }).catch(() => firstOption.click({ force: true }));
+    await expect(page.getByText(/step 2 of 6/i)).toBeVisible({ timeout: 15_000 });
+  });
+
+  test('TC_FR001_32 - progress indicator advances as steps complete', async ({ page }) => {
+    const progress = page.getByText(/step \d of 6/i).first();
+    await expect(progress).toBeVisible();
+    const before = await progress.textContent();
+    const firstOption = page.getByRole('radio').first();
+    await firstOption.check({ force: true }).catch(() => firstOption.click({ force: true }));
+    await expect(page.getByText(/step 2 of 6/i)).toBeVisible({ timeout: 15_000 });
+    const after = await page.getByText(/step \d of 6/i).first().textContent();
+    expect(after).not.toBe(before);
+  });
+
+  test('TC_FR001_33 - back navigation returns to the previous step', async ({ page }) => {
+    const firstOption = page.getByRole('radio').first();
+    await firstOption.check({ force: true }).catch(() => firstOption.click({ force: true }));
+    await expect(page.getByText(/step 2 of 6/i)).toBeVisible({ timeout: 15_000 });
+    await page.getByRole('button', { name: /back/i }).click();
+    await expect(page.getByText(/step 1 of 6/i)).toBeVisible({ timeout: 15_000 });
+  });
+
+  test('TC_FR001_34 - previous answer is retained after back navigation', async ({ page }) => {
+    const firstOption = page.getByRole('radio').first();
+    await firstOption.check({ force: true }).catch(() => firstOption.click({ force: true }));
+    await expect(page.getByText(/step 2 of 6/i)).toBeVisible({ timeout: 15_000 });
+    await page.getByRole('button', { name: /back/i }).click();
+    await expect(page.getByText(/step 1 of 6/i)).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByRole('radio').first()).toBeChecked();
+  });
+
+  // ------------------------------------------------- Validation and errors
+  test('TC_FR001_35 - cannot advance without answering the current question', async ({ page }) => {
+    const nextButton = page.getByRole('button', { name: /next|continue/i });
+    if (await nextButton.count()) {
+      await nextButton.click();
+      await expect(page.getByText(/step 1 of 6/i)).toBeVisible();
+      await expect(page.getByText(/required|select an option|please answer/i).first()).toBeVisible();
+    }
+  });
+
+  // ------------------------------------------------- Resilience
+  test('TC_FR001_36 - page works with tracking params stripped', async ({ page }) => {
+    const response = await page.goto('/mortgage/get-prequalified/?src=buy', { waitUntil: 'load' });
+    expect(response?.status()).toBe(200);
+    await expect(page.getByText(/step 1 of 6/i)).toBeVisible();
+  });
+
+  test('TC_FR001_37 - refresh mid-flow keeps the user in the flow', async ({ page }) => {
+    const firstOption = page.getByRole('radio').first();
+    await firstOption.check({ force: true }).catch(() => firstOption.click({ force: true }));
+    await expect(page.getByText(/step 2 of 6/i)).toBeVisible({ timeout: 15_000 });
+    await page.reload({ waitUntil: 'domcontentloaded' });
+    await expect(page.getByText(/step \d of 6/i).first()).toBeVisible({ timeout: 15_000 });
+  });
+
+  // ------------------------------------------------- Accessibility
+  test('TC_FR001_38 - step questions are keyboard navigable', async ({ page }) => {
+    await page.keyboard.press('Tab');
+    const focused = page.locator(':focus');
+    await expect(focused).toBeVisible();
+  });
+
+  test('TC_FR001_39 - page has no console errors on load', async ({ page }) => {
+    const errors: string[] = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+    page.on('console', (m) => {
+      if (m.type() === 'error') errors.push(m.text());
+    });
+    await page.goto(prequalUrl, { waitUntil: 'networkidle' });
+    expect(errors).toEqual([]);
+  });
+
+  // ------------------------------------------------- Cross-browser
+  test('TC_FR001_40 - prequal landing renders on all supported browsers', async ({ page }) => {
+    // Runs on chromium, firefox and webkit via playwright.config.ts projects.
+    await expect(page.getByText(/get prequalified/i).first()).toBeVisible();
+    await expect(page.getByText(/step 1 of 6/i)).toBeVisible();
+    await expect(page.getByRole('radio').first()).toBeVisible();
   });
 });

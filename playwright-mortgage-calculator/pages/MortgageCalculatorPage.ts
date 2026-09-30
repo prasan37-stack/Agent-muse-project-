@@ -8,7 +8,7 @@ import { Page, Locator } from '@playwright/test';
  */
 export class MortgageCalculatorPage {
   readonly page: Page;
-  readonly url = '/mortgage/tools/rate_calc/input_page';
+  readonly url = '/mortgage/get-prequalified/?src=buy&refdm=DMIWE7AW9T';
 
   readonly pageHeader: Locator;
   readonly loanPurpose: Locator;

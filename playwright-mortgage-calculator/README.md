@@ -23,7 +23,7 @@ npm run test:headed   # headed mode
 
 - `tests/mortgage-calculator.spec.ts` — all 25 test cases, grouped by module
 - `pages/MortgageCalculatorPage.ts` — page object for the calculator input page
-- `playwright.config.ts` — base URL `https://www.wellsfargo.com`, 3 browser projects
+- `playwright.config.ts` — base URL `https://web.secure.wellsfargo.com`, 3 browser projects
 
 ## Notes
 

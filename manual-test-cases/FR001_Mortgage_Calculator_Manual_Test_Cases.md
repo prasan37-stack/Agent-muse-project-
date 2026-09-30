@@ -16,13 +16,13 @@ User has internet access
 
 ## Test Steps
 1. Open browser
-2. Navigate to https://www.wellsfargo.com/mortgage/tools/rate_calc/input_page
+2. Navigate to https://web.secure.wellsfargo.com/mortgage/get-prequalified/?src=buy&refdm=DMIWE7AW9T
 3. Wait for page load
 
 ## Test Data
 | Field | Value |
 | ----- | ----- |
-| URL | https://www.wellsfargo.com/mortgage/tools/rate_calc/input_page |
+| URL | https://web.secure.wellsfargo.com/mortgage/get-prequalified/?src=buy&refdm=DMIWE7AW9T |
 
 ## Expected Results
 HTTP 200; Page loads <3s; Calculator form visible with Wells Fargo header
@@ -832,3 +832,497 @@ _(fill in during execution)_
 
 ## Notes
 **Req ID:** FR001-e | **Module/Feature:** Calculate Action | **Test Type:** Usability | **Priority:** Low | **Notes:** Confirm with UX spec
+
+# FR001 — Get Prequalified Flow: Manual Test Cases (Steps 1–6)
+
+New prequalification URL: `https://web.secure.wellsfargo.com/mortgage/get-prequalified/?src=buy&refdm=DMIWE7AW9T`
+
+---
+
+## Test Case ID
+`TC_FR001_26`
+
+## Test Description
+Prequal page loads with HTTP 200 and shows Step 1 of 6
+
+## Preconditions
+User has internet access
+
+## Test Steps
+1. Open browser
+2. Navigate to https://web.secure.wellsfargo.com/mortgage/get-prequalified/?src=buy&refdm=DMIWE7AW9T
+3. Wait for page load
+
+## Test Data
+| Field | Value |
+| ----- | ----- |
+| URL | https://web.secure.wellsfargo.com/mortgage/get-prequalified/?src=buy&refdm=DMIWE7AW9T |
+
+## Expected Results
+HTTP 200; Page loads <3s; 'Step 1 of 6' and 'Get Prequalified' heading visible
+
+## Actual Results
+_(fill in during execution)_
+
+## Status
+`Pass / Fail` _(fill in during execution)_
+
+## Notes
+**Req ID:** FR001 | **Module/Feature:** Prequal Landing | **Test Type:** Smoke | **Priority:** Critical
+
+---
+
+## Test Case ID
+`TC_FR001_27`
+
+## Test Description
+Credit-impact disclaimer is visible before starting
+
+## Preconditions
+Prequal page loaded
+
+## Test Steps
+1. Load the prequal page
+2. Read the intro text above Question 1
+
+## Test Data
+| Field | Value |
+| ----- | ----- |
+| Input | N/A |
+
+## Expected Results
+Text states the user's credit will not be affected by providing details
+
+## Actual Results
+_(fill in during execution)_
+
+## Status
+`Pass / Fail` _(fill in during execution)_
+
+## Notes
+**Req ID:** FR001 | **Module/Feature:** Prequal Landing | **Test Type:** Functional | **Priority:** High
+
+---
+
+## Test Case ID
+`TC_FR001_28`
+
+## Test Description
+Prequal vs full application explainer is shown
+
+## Preconditions
+Prequal page loaded
+
+## Test Steps
+1. Load the prequal page
+2. Locate the explainer text about prequalification vs full loan application
+
+## Test Data
+| Field | Value |
+| ----- | ----- |
+| Input | N/A |
+
+## Expected Results
+Explainer clarifies a prequalification is not the same as completing a full loan application
+
+## Actual Results
+_(fill in during execution)_
+
+## Status
+`Pass / Fail` _(fill in during execution)_
+
+## Notes
+**Req ID:** FR001 | **Module/Feature:** Prequal Landing | **Test Type:** Functional | **Priority:** Medium
+
+---
+
+## Test Case ID
+`TC_FR001_29`
+
+## Test Description
+Mortgage consultant phone CTA is present and dialable
+
+## Preconditions
+Prequal page loaded
+
+## Test Steps
+1. Load the prequal page
+2. Find the 'Call us' number 1-888-446-2350
+3. Verify it is a tel: link
+
+## Test Data
+| Field | Value |
+| ----- | ----- |
+| Phone | 1-888-446-2350 |
+
+## Expected Results
+Phone number visible; link uses tel: so it dials on mobile devices
+
+## Actual Results
+_(fill in during execution)_
+
+## Status
+`Pass / Fail` _(fill in during execution)_
+
+## Notes
+**Req ID:** FR001 | **Module/Feature:** Prequal Landing | **Test Type:** Functional | **Priority:** Medium
+
+---
+
+## Test Case ID
+`TC_FR001_30`
+
+## Test Description
+Equal Housing Lender disclosure is present
+
+## Preconditions
+Prequal page loaded
+
+## Test Steps
+1. Load the prequal page
+2. Scroll to footer disclosures
+
+## Test Data
+| Field | Value |
+| ----- | ----- |
+| Input | N/A |
+
+## Expected Results
+'Equal Housing Lender' and 'Wells Fargo Home Mortgage is a division of Wells Fargo Bank, N.A.' are visible
+
+## Actual Results
+_(fill in during execution)_
+
+## Status
+`Pass / Fail` _(fill in during execution)_
+
+## Notes
+**Req ID:** FR001 | **Module/Feature:** Prequal Landing | **Test Type:** Compliance | **Priority:** High
+
+---
+
+## Test Case ID
+`TC_FR001_31`
+
+## Test Description
+Answering Step 1 question advances to Step 2
+
+## Preconditions
+Prequal page loaded at Step 1
+
+## Test Steps
+1. Read Question 1
+2. Select an answer option
+3. Wait for transition
+
+## Test Data
+| Field | Value |
+| ----- | ----- |
+| Question 1 | any valid option |
+
+## Expected Results
+Flow advances to 'Step 2 of 6'; selected answer recorded
+
+## Actual Results
+_(fill in during execution)_
+
+## Status
+`Pass / Fail` _(fill in during execution)_
+
+## Notes
+**Req ID:** FR001 | **Module/Feature:** Step Navigation | **Test Type:** Functional | **Priority:** Critical
+
+---
+
+## Test Case ID
+`TC_FR001_32`
+
+## Test Description
+Progress indicator advances as steps complete
+
+## Preconditions
+Prequal page loaded at Step 1
+
+## Test Steps
+1. Note the 'Step 1 of 6' indicator
+2. Answer Question 1
+3. Observe the indicator
+
+## Test Data
+| Field | Value |
+| ----- | ----- |
+| Question 1 | any valid option |
+
+## Expected Results
+Indicator updates to 'Step 2 of 6'; completed step marked done
+
+## Actual Results
+_(fill in during execution)_
+
+## Status
+`Pass / Fail` _(fill in during execution)_
+
+## Notes
+**Req ID:** FR001 | **Module/Feature:** Step Navigation | **Test Type:** Functional | **Priority:** High
+
+---
+
+## Test Case ID
+`TC_FR001_33`
+
+## Test Description
+Back navigation returns to the previous step
+
+## Preconditions
+User is on Step 2
+
+## Test Steps
+1. Answer Question 1 to reach Step 2
+2. Click Back
+3. Verify current step
+
+## Test Data
+| Field | Value |
+| ----- | ----- |
+| Input | N/A |
+
+## Expected Results
+Flow returns to 'Step 1 of 6' without errors
+
+## Actual Results
+_(fill in during execution)_
+
+## Status
+`Pass / Fail` _(fill in during execution)_
+
+## Notes
+**Req ID:** FR001 | **Module/Feature:** Step Navigation | **Test Type:** Functional | **Priority:** High
+
+---
+
+## Test Case ID
+`TC_FR001_34`
+
+## Test Description
+Previous answer is retained after back navigation
+
+## Preconditions
+User is on Step 2 after answering Question 1
+
+## Test Steps
+1. Answer Question 1 (remember the choice)
+2. Click Back to Step 1
+3. Check the options
+
+## Test Data
+| Field | Value |
+| ----- | ----- |
+| Question 1 | first option selected |
+
+## Expected Results
+Previously selected option is still selected on Step 1
+
+## Actual Results
+_(fill in during execution)_
+
+## Status
+`Pass / Fail` _(fill in during execution)_
+
+## Notes
+**Req ID:** FR001 | **Module/Feature:** Step Navigation | **Test Type:** Functional | **Priority:** High
+
+---
+
+## Test Case ID
+`TC_FR001_35`
+
+## Test Description
+Cannot advance without answering the current question
+
+## Preconditions
+Prequal page loaded at Step 1, no option selected
+
+## Test Steps
+1. Leave Question 1 unanswered
+2. Click Next/Continue (if present)
+3. Observe behavior
+
+## Test Data
+| Field | Value |
+| ----- | ----- |
+| Input | N/A |
+
+## Expected Results
+Flow stays on Step 1; a validation message prompts the user to answer
+
+## Actual Results
+_(fill in during execution)_
+
+## Status
+`Pass / Fail` _(fill in during execution)_
+
+## Notes
+**Req ID:** FR001 | **Module/Feature:** Validation — behavior may vary if flow auto-advances on selection | **Test Type:** Negative | **Priority:** High
+
+---
+
+## Test Case ID
+`TC_FR001_36`
+
+## Test Description
+Page works with tracking params stripped
+
+## Preconditions
+User has internet access
+
+## Test Steps
+1. Navigate to https://web.secure.wellsfargo.com/mortgage/get-prequalified/?src=buy (no _gl/_ga params)
+2. Wait for load
+
+## Test Data
+| Field | Value |
+| ----- | ----- |
+| URL | https://web.secure.wellsfargo.com/mortgage/get-prequalified/?src=buy |
+
+## Expected Results
+HTTP 200; Step 1 renders normally without analytics params
+
+## Actual Results
+_(fill in during execution)_
+
+## Status
+`Pass / Fail` _(fill in during execution)_
+
+## Notes
+**Req ID:** FR001 | **Module/Feature:** Prequal Landing | **Test Type:** Functional | **Priority:** Medium
+
+---
+
+## Test Case ID
+`TC_FR001_37`
+
+## Test Description
+Refresh mid-flow keeps the user in the flow
+
+## Preconditions
+User is on Step 2
+
+## Test Steps
+1. Answer Question 1 to reach Step 2
+2. Refresh the browser
+3. Observe the restored state
+
+## Test Data
+| Field | Value |
+| ----- | ----- |
+| Input | N/A |
+
+## Expected Results
+User remains in the prequal flow (Step 1 or 2 restored); no blank page or error
+
+## Actual Results
+_(fill in during execution)_
+
+## Status
+`Pass / Fail` _(fill in during execution)_
+
+## Notes
+**Req ID:** FR001 | **Module/Feature:** Resilience | **Test Type:** Functional | **Priority:** Medium
+
+---
+
+## Test Case ID
+`TC_FR001_38`
+
+## Test Description
+Step questions are keyboard navigable
+
+## Preconditions
+Prequal page loaded at Step 1
+
+## Test Steps
+1. Press Tab repeatedly
+2. Verify focus moves visibly through options
+3. Select an option with keyboard
+
+## Test Data
+| Field | Value |
+| ----- | ----- |
+| Input | N/A |
+
+## Expected Results
+All options reachable and operable by keyboard; focus indicator visible
+
+## Actual Results
+_(fill in during execution)_
+
+## Status
+`Pass / Fail` _(fill in during execution)_
+
+## Notes
+**Req ID:** FR001 | **Module/Feature:** Accessibility | **Test Type:** Accessibility | **Priority:** Medium
+
+---
+
+## Test Case ID
+`TC_FR001_39`
+
+## Test Description
+Page has no console errors on load
+
+## Preconditions
+DevTools console open; Prequal page loading
+
+## Test Steps
+1. Open DevTools console
+2. Load the prequal page
+3. Check for errors
+
+## Test Data
+| Field | Value |
+| ----- | ----- |
+| Input | N/A |
+
+## Expected Results
+No uncaught exceptions or console errors on initial load
+
+## Actual Results
+_(fill in during execution)_
+
+## Status
+`Pass / Fail` _(fill in during execution)_
+
+## Notes
+**Req ID:** FR001 | **Module/Feature:** Resilience | **Test Type:** Non-functional | **Priority:** Medium
+
+---
+
+## Test Case ID
+`TC_FR001_40`
+
+## Test Description
+Prequal landing renders on supported browsers
+
+## Preconditions
+Chrome/Firefox/Safari available
+
+## Test Steps
+1. Open the prequal URL in Chrome, Firefox, Safari, Edge
+2. Verify heading, step indicator, and options render
+
+## Test Data
+| Field | Value |
+| ----- | ----- |
+| Browsers | Chrome 120+, Firefox 115+, Safari 17+, Edge 120+ |
+
+## Expected Results
+UI renders consistently; no broken layout; all Step 1 elements visible and usable
+
+## Actual Results
+_(fill in during execution)_
+
+## Status
+`Pass / Fail` _(fill in during execution)_
+
+## Notes
+**Req ID:** FR001 | **Module/Feature:** Prequal Landing | **Test Type:** Compatibility | **Priority:** High

@@ -6,7 +6,7 @@ export default defineConfig({
   retries: 1,
   reporter: 'html',
   use: {
-    baseURL: 'https://www.wellsfargo.com',
+    baseURL: 'https://web.secure.wellsfargo.com',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
