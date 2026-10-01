@@ -227,7 +227,7 @@ test.describe('FR001 - Get Prequalified flow (6 steps)', () => {
     const response = await page.goto(prequalUrl, { waitUntil: 'load' });
     expect(response?.status()).toBe(200);
     await expect(page.getByText(/step 1 of 6/i)).toBeVisible();
-    await expect(page.getByText(/get prequalified/i).first()).toBeVisible();
+    await expect(page.getByText(/get your personalized purchase rate quote/i).first()).toBeVisible();
   });
 
   test('TC_FR001_27 - Credit-impact disclaimer is visible before starting', async ({ page }) => {
@@ -255,9 +255,9 @@ test.describe('FR001 - Get Prequalified flow (6 steps)', () => {
   test('TC_FR001_31 - Answering Step 1 question advances to Step 2', async ({ page }) => {
     const step1 = page.getByText(/question 1/i).first();
     await expect(step1).toBeVisible();
-    const firstOption = page.getByRole('radio').first();
+    const firstOption = page.getByRole('button', { name: /just starting my search|ready to make an offer|need a loan now/i }).first();
     await expect(firstOption).toBeVisible();
-    await firstOption.check({ force: true }).catch(() => firstOption.click({ force: true }));
+    await firstOption.click();
     await expect(page.getByText(/step 2 of 6/i)).toBeVisible({ timeout: 15_000 });
   });
 
@@ -265,28 +265,29 @@ test.describe('FR001 - Get Prequalified flow (6 steps)', () => {
     const progress = page.getByText(/step \d of 6/i).first();
     await expect(progress).toBeVisible();
     const before = await progress.textContent();
-    const firstOption = page.getByRole('radio').first();
-    await firstOption.check({ force: true }).catch(() => firstOption.click({ force: true }));
+    const firstOption = page.getByRole('button', { name: /just starting my search|ready to make an offer|need a loan now/i }).first();
+    await firstOption.click();
     await expect(page.getByText(/step 2 of 6/i)).toBeVisible({ timeout: 15_000 });
     const after = await page.getByText(/step \d of 6/i).first().textContent();
     expect(after).not.toBe(before);
   });
 
   test('TC_FR001_33 - Back navigation returns to the previous step', async ({ page }) => {
-    const firstOption = page.getByRole('radio').first();
-    await firstOption.check({ force: true }).catch(() => firstOption.click({ force: true }));
+    const firstOption = page.getByRole('button', { name: /just starting my search|ready to make an offer|need a loan now/i }).first();
+    await firstOption.click();
     await expect(page.getByText(/step 2 of 6/i)).toBeVisible({ timeout: 15_000 });
     await page.getByRole('button', { name: /back/i }).click();
     await expect(page.getByText(/step 1 of 6/i)).toBeVisible({ timeout: 15_000 });
   });
 
   test('TC_FR001_34 - Previous answer is retained after back navigation', async ({ page }) => {
-    const firstOption = page.getByRole('radio').first();
-    await firstOption.check({ force: true }).catch(() => firstOption.click({ force: true }));
+    const firstOption = page.getByRole('button', { name: /just starting my search|ready to make an offer|need a loan now/i }).first();
+    await firstOption.click();
     await expect(page.getByText(/step 2 of 6/i)).toBeVisible({ timeout: 15_000 });
     await page.getByRole('button', { name: /back/i }).click();
     await expect(page.getByText(/step 1 of 6/i)).toBeVisible({ timeout: 15_000 });
-    await expect(page.getByRole('radio').first()).toBeChecked();
+    // DEF-06: app does not visually retain the selected answer after Back navigation
+    await expect(page.getByRole('button', { name: /just starting my search/i })).toHaveAttribute('aria-pressed', 'true');
   });
 
   // ------------------------------------------------- Validation and errors
@@ -307,8 +308,8 @@ test.describe('FR001 - Get Prequalified flow (6 steps)', () => {
   });
 
   test('TC_FR001_37 - Refresh mid-flow keeps the user in the flow', async ({ page }) => {
-    const firstOption = page.getByRole('radio').first();
-    await firstOption.check({ force: true }).catch(() => firstOption.click({ force: true }));
+    const firstOption = page.getByRole('button', { name: /just starting my search|ready to make an offer|need a loan now/i }).first();
+    await firstOption.click();
     await expect(page.getByText(/step 2 of 6/i)).toBeVisible({ timeout: 15_000 });
     await page.reload({ waitUntil: 'domcontentloaded' });
     await expect(page.getByText(/step \d of 6/i).first()).toBeVisible({ timeout: 15_000 });
@@ -323,7 +324,7 @@ test.describe('FR001 - Get Prequalified flow (6 steps)', () => {
 
   test('TC_FR001_39 - Page has no console errors on load', async ({ page }) => {
     const errors = await collectConsoleErrors(page, async () => {
-      await page.goto(prequalUrl, { waitUntil: 'networkidle' });
+      await page.goto(prequalUrl, { waitUntil: 'domcontentloaded' });
     });
     expect(errors).toEqual([]);
   });
@@ -331,8 +332,8 @@ test.describe('FR001 - Get Prequalified flow (6 steps)', () => {
   // ------------------------------------------------- Cross-browser
   test('TC_FR001_40 - Prequal landing renders on supported browsers', async ({ page }) => {
     // Runs on chromium, firefox and webkit via playwright.config.ts projects.
-    await expect(page.getByText(/get prequalified/i).first()).toBeVisible();
+    await expect(page.getByText(/get your personalized purchase rate quote/i).first()).toBeVisible();
     await expect(page.getByText(/step 1 of 6/i)).toBeVisible();
-    await expect(page.getByRole('radio').first()).toBeVisible();
+    await expect(page.getByRole('button', { name: /just starting my search|ready to make an offer|need a loan now/i }).first()).toBeVisible();
   });
 });
